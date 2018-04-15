@@ -3,7 +3,7 @@
 import rospy
 from geometry_msgs.msg import PoseStamped
 from styx_msgs.msg import Lane, Waypoint
-
+from scipy.spatial import KDTree
 import math
 
 '''
@@ -32,20 +32,71 @@ class WaypointUpdater(object):
         rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
 
         # TODO: Add a subscriber for /traffic_waypoint and /obstacle_waypoint below
+        #rospy.Subscriber('/traffic_waypoint', Lane, self.waypoints_tl)
+        #rospy.Subscriber('/obstacle_waypoint', Lane, self.waypoints_obs)
 
 
         self.final_waypoints_pub = rospy.Publisher('final_waypoints', Lane, queue_size=1)
 
         # TODO: Add other member variables you need below
+        #init vars
+        self.pose = None
+        self.base_waypoints = None
+        self.waypoints_2d = None
+        self.waypoint_tree = None
+        #rospy.spin()
+        self.loop()
 
-        rospy.spin()
-
+    def loop(self):
+        #as shown in walkthrough
+        rate = rospy.Rate(50)
+        while not rospy.is_shutdown():
+            if self.pose and self.base_waypoints:
+                closest_waypoints_idx = self.get_closest_waypoints_idx()
+                self.publish_waypoints(closest_waypoints_idx)
+            rate.sleep()
+            
+    def publish_waypoints(self, closest_idx):
+        #as shown in walkthrough
+        lane = Lane()
+        lane.header = self.base_waypoints.header
+        lane.waypoints = self.base_waypoints.waypoints.[closest_idx: closest_idx + LOOKAHEAD_WPS]
+        self.final_waypoints_pub.publish(lane)
+            
+    def get_cloest_waypoints_idx(self):
+        #as shown in walkthrough
+        x = self.pose.pose.position.x
+        y = self.pose.pose.position.y
+        closest_idx = self.waypoints_tree.query([x,y], 1)[1]
+        
+        closest_coord = self.waypoints_2d[closest_idx]
+        prev_coord = self.waypoints_2d[closest_idx-1]
+        
+        cl_vect = np.array(closest_coord)
+        prev_vect = np.array(prev_coord)
+        pos_vect = np.array([x,y])
+        
+        val = np.dot(cl_vect - prev_vect , pos_vect - cl_vect)
+        
+        if val > 0:
+            closest_idx = (closest_idx +1 ) % len(self.waypints_2d)
+        return closest_idx
+       
+        
+    
+        
+    
     def pose_cb(self, msg):
-        # TODO: Implement
+        #store current position
+        self.pose = msg
         pass
 
     def waypoints_cb(self, waypoints):
-        # TODO: Implement
+        #store incoming waypoints as object attribute
+        self.base_waypoints = waypoints
+        if not self.waypoints_2d:
+        self.waypoints_2d = [[waypoints.pose.pose.position.x, waypoints.pose.pose.position.y] for waypoint in waypoints.waypoints
+        self.waypoint_tree = KDTree(self.waypoints_2d)
         pass
 
     def traffic_cb(self, msg):

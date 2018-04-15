@@ -2,6 +2,19 @@ This is the project repo for the final project of the Udacity Self-Driving Car N
 
 Please use **one** of the two installation options, either native **or** docker installation.
 
+### Project walkthrough
+The goal of this project is to implement several ROS nodes to make a simulated car complete several tracks in the provided simulator.
+
+The following pictures illustrates the architecture of the ROS implementation:
+
+
+
+As suggested in the lessons, as a first step the update_waypoints node was partially implemented in order for the simulator to be useful for development of other nodes.
+This node is supposed to pubhlish a list of waypoints with respective target velocities, taking into account obstacles and traffic lights. However, initially it was sufficient
+for the nodes to subscribe to several topics and publish its own topic of updated waypoints.
+As shown in the walkthrough, a KDTree is used to find the closest waypoints and return a subset of the base waypoint list after checking if the closest waypoints is in front or behind the vehicle.
+
+
 ### Native Installation
 
 * Be sure that your workstation is running Ubuntu 16.04 Xenial Xerus or Ubuntu 14.04 Trusty Tahir. [Ubuntu downloads can be found here](https://www.ubuntu.com/download/desktop).
