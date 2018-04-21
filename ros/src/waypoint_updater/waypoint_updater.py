@@ -99,8 +99,7 @@ class WaypointUpdater(object):
             temp.append(p)
         return temp
             
-            
-    def get_cloest_waypoints_idx(self):
+    def get_closest_waypoints_idx(self):
         #as shown in walkthrough
         x = self.pose.pose.position.x
         y = self.pose.pose.position.y
