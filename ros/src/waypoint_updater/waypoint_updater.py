@@ -56,12 +56,12 @@ class WaypointUpdater(object):
                 self.publish_waypoints(closest_waypoints_idx)
             rate.sleep()
             
-    def publish_waypoints_old(self, closest_idx):
+  #  def publish_waypoints_old(self, closest_idx):
         #as shown in walkthrough
-        lane = Lane()
-        lane.header = self.base_waypoints.header
-        lane.waypoints = self.base_waypoints.waypoints.[closest_idx: closest_idx + LOOKAHEAD_WPS]
-        self.final_waypoints_pub.publish(lane)
+ #       lane = Lane()
+#        lane.header = self.base_waypoints.header
+        #lane.waypoints = self.base_waypoints.waypoints.[closest_idx: closest_idx + LOOKAHEAD_WPS]
+        #self.final_waypoints_pub.publish(lane)
         
     def publish_waypoints(self):
         final_lane = self.generate_lane()
@@ -132,7 +132,7 @@ class WaypointUpdater(object):
         #store incoming waypoints as object attribute
         self.base_waypoints = waypoints
         if not self.waypoints_2d:
-            self.waypoints_2d = [[waypoints.pose.pose.position.x, waypoints.pose.pose.position.y] for waypoint in waypoints.waypoints
+            self.waypoints_2d = [[waypoints.pose.pose.position.x, waypoints.pose.pose.position.y] for waypoint in waypoints.waypoints]
             self.waypoint_tree = KDTree(self.waypoints_2d)
         pass
 
