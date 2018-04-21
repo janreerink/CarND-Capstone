@@ -20,6 +20,9 @@ class TLDetector(object):
 
         self.pose = None
         self.waypoints = None
+        self.waypoints_2d = None
+        self.waypoint_tree = None
+
         self.camera_image = None
         self.lights = []
 
@@ -49,9 +52,7 @@ class TLDetector(object):
         self.last_wp = -1
         self.state_count = 0
 
-        self.waypoints = None
-        self.waypoints_2d = None
-        self.waypoint_tree = None
+
         rospy.spin()
 
     def pose_cb(self, msg):
@@ -61,7 +62,7 @@ class TLDetector(object):
         
         self.waypoints = waypoints
         if not self.waypoints_2d:
-            self.waypoints_2d = [[waypoints.pose.pose.position.x, waypoints.pose.pose.position.y] for waypoint in waypoints.waypoints]
+            self.waypoints_2d = [[waypoint.pose.pose.position.x, waypoint.pose.pose.position.y] for waypoint in waypoints.waypoint]
             self.waypoint_tree = KDTree(self.waypoints_2d)
         pass
         
@@ -98,7 +99,7 @@ class TLDetector(object):
             self.upcoming_red_light_pub.publish(Int32(self.last_wp))
         self.state_count += 1
 
-    def get_cloest_waypoints_idx_old(x,y):
+    def get_cloest_waypoints_idx(self, x,y):
         #as shown in walkthrough
         #x = self.pose.pose.position.x
         #y = self.pose.pose.position.y
@@ -121,7 +122,7 @@ class TLDetector(object):
     def basic_distance(self, x1, y1, x2, y2):
         return math.sqrt((x2-x1)**2 + (y2-y1)**2)
         
-    def get_cloest_waypoints_idx(self, x, y):
+    def get_cloest_waypoints_idx2(self, x, y):
         closest_dist = float('inf')
         closest_wp = 0
         for i in range(len(self.waypoints)):
@@ -134,8 +135,6 @@ class TLDetector(object):
 
         return closest_wp
         
-        
-return index
 
     def get_light_state(self, light):
         """Determines the current color of the traffic light
