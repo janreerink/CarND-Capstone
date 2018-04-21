@@ -2,6 +2,8 @@
 GAS_DENSITY = 2.858
 ONE_MPH = 0.44704
 
+from yaw_controller import YawController
+from lowpass import LowPassFilter
 
 class Controller(object):
     def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit, accel_limit,
