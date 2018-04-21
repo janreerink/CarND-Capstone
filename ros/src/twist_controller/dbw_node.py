@@ -67,9 +67,9 @@ class DBWNode(object):
             brake_deadband=brake_deadband, wheel_radius=wheel_radius)
             
         # TODO: Subscribe to all the topics you need to
-        rospy.subscriber('/vehicle/dbw_enabled', Bool, self.dbw_enabled_cb)
-        rospy.subscriber('/twist_cmd', TwistStamped, self.twist_cb)
-        rospy.subscriber('/current_velocity', TwistStamped, self.velocity_cb)
+        rospy.Subscriber('/vehicle/dbw_enabled', Bool, self.dbw_enabled_cb)
+        rospy.Subscriber('/twist_cmd', TwistStamped, self.twist_cb)
+        rospy.Subscriber('/current_velocity', TwistStamped, self.velocity_cb)
         
         self.current_vel = None
         self.curr_ang_vel = None
