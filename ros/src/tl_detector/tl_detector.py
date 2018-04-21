@@ -101,7 +101,7 @@ class TLDetector(object):
             self.upcoming_red_light_pub.publish(Int32(self.last_wp))
         self.state_count += 1
 
-    def get_cloest_waypoints_idx(self, x,y):
+    def get_closest_waypoint_idx(self, x,y):
         #as shown in walkthrough
         #x = self.pose.pose.position.x
         #y = self.pose.pose.position.y
@@ -172,12 +172,12 @@ class TLDetector(object):
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
         if(self.pose):
-            car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
+            car_wp_idx = self.get_closest_waypoint_idx(self.pose.pose.position.x, self.pose.pose.position.y)
             
             diff = len(self.waypoints.waypoints)
             for idx, light in enumerate(self.lights):
                 line = stop_line_positions[idx]
-                current_wp_idx = self.get_closest_waypoint(line[0],line[1])
+                current_wp_idx = self.get_closest_waypoint_idx(line[0],line[1])
                 
                 dist = current_wp_idx - car_wp_idx
                 if d >= 0 and d < diff:
