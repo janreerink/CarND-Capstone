@@ -8,11 +8,28 @@ The goal of this project is to implement several ROS nodes to make a simulated c
 The following pictures illustrates the architecture of the ROS implementation:
 
 
-
+#### Partial Waypoint node
 As suggested in the lessons, as a first step the update_waypoints node was partially implemented in order for the simulator to be useful for development of other nodes.
 This node is supposed to pubhlish a list of waypoints with respective target velocities, taking into account obstacles and traffic lights. However, initially it was sufficient
 for the nodes to subscribe to several topics and publish its own topic of updated waypoints.
 As shown in the walkthrough, a KDTree is used to find the closest waypoints and return a subset of the base waypoint list after checking if the closest waypoints is in front or behind the vehicle.
+
+#### DBW node
+The next step was to implement the drive-by-wire node, which receives twist commands, current velocity and the status of the dbw-mode (auto or manual). Depending on these inputs, the dbw-node should
+publish control inputs for acceleration and steering. Twist commands are published based on waypoints and associated velocities.
+THe dbw node subscribes to get dbw mode, the current velocity and target linear and angular velocities. These values are sent to a controller, which provides suitable throttle, brake and steering values to
+be published.
+The controller uses the standard PID and lowpass functions provided in the starter code. 
+
+#### traffic light detection node
+This node takes the position of traffic lights, camera images to determine the light's color, the car's position and the list of base waypoints. If a red traffic light is close to the car the waypoint
+is published to a list of traffic waypoints. These are later used to modify the listof waypoints so that the car decelerates and stops at the traffic light line.
+For classification of images containing traffic lights a pretrained CNN from a previous project was used with the last layer replaced by soft-max with for four classes (red, yellow, green, n/a).
+
+#### Waypoint updater part 2
+With the traffic light detection working, the waypoint updater can utilize information on nearby traffic light states to change target velocities for waypoints so that the car slows down and stops at red lights.
+
+
 
 
 ### Native Installation
