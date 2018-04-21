@@ -5,7 +5,7 @@ ONE_MPH = 0.44704
 
 class Controller(object):
     def __init__(self, vehicle_mass, fuel_capavity, brake_deadband, decelt_limit, accel_limit,
-    wheel_radious, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
+    wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
         self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
         kp = 0.3 #proportional term
         ki = 0.1 #integrative term
@@ -24,7 +24,7 @@ class Controller(object):
         self.brake_deadband = brake_deadband
         self.decelt_limit = decel_limit
         self.accel_limit = accel_limit
-        self.wheel_radious = wheel_radius
+        self.wheel_radius = wheel_radius
         
         self.last_time = rospy.get_time()
         
