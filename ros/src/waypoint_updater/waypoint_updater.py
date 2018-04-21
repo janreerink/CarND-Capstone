@@ -54,7 +54,8 @@ class WaypointUpdater(object):
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
                 closest_waypoints_idx = self.get_closest_waypoints_idx()
-                self.publish_waypoints(closest_waypoints_idx)
+                #self.publish_waypoints(closest_waypoints_idx)
+                self.publish_waypoints()
             rate.sleep()
             
   #  def publish_waypoints_old(self, closest_idx):
