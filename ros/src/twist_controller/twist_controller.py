@@ -4,8 +4,9 @@ ONE_MPH = 0.44704
 
 
 class Controller(object):
-    def __init__(self, vehicle_mass, fuel_capavity, brake_deadband, decelt_limit, accel_limit,
+    def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit, accel_limit,
     wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
+        
         self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
         kp = 0.3 #proportional term
         ki = 0.1 #integrative term
