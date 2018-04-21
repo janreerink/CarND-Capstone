@@ -103,7 +103,7 @@ class WaypointUpdater(object):
         #as shown in walkthrough
         x = self.pose.pose.position.x
         y = self.pose.pose.position.y
-        closest_idx = self.waypoints_tree.query([x,y], 1)[1]
+        closest_idx = self.waypoint_tree.query([x,y], 1)[1]
         
         closest_coord = self.waypoints_2d[closest_idx]
         prev_coord = self.waypoints_2d[closest_idx-1]
