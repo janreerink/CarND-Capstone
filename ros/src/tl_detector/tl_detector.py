@@ -25,7 +25,6 @@ class TLDetector(object):
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
         sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
-
         '''
         /vehicle/traffic_lights provides you with the location of the traffic light in 3D map space and
         helps you acquire an accurate ground truth data source for the traffic light
@@ -50,7 +49,7 @@ class TLDetector(object):
         self.last_wp = -1
         self.state_count = 0
 
-        self.base_waypoints = None
+        self.waypoints = None
         self.waypoints_2d = None
         self.waypoint_tree = None
         rospy.spin()
@@ -59,12 +58,13 @@ class TLDetector(object):
         self.pose = msg
     def waypoints_cb(self, waypoints):
         #store incoming waypoints as object attribute
-        self.base_waypoints = waypoints
+        
+        self.waypoints = waypoints
         if not self.waypoints_2d:
             self.waypoints_2d = [[waypoints.pose.pose.position.x, waypoints.pose.pose.position.y] for waypoint in waypoints.waypoints]
             self.waypoint_tree = KDTree(self.waypoints_2d)
         pass
-
+        
     def traffic_cb(self, msg):
         self.lights = msg.lights
 
@@ -98,7 +98,7 @@ class TLDetector(object):
             self.upcoming_red_light_pub.publish(Int32(self.last_wp))
         self.state_count += 1
 
-    def get_cloest_waypoints_idx(x,y):
+    def get_cloest_waypoints_idx_old(x,y):
         #as shown in walkthrough
         #x = self.pose.pose.position.x
         #y = self.pose.pose.position.y
@@ -116,6 +116,26 @@ class TLDetector(object):
         if val > 0:
             closest_idx = (closest_idx +1 ) % len(self.waypints_2d)
         return closest_idx
+
+        
+    def basic_distance(self, x1, y1, x2, y2):
+        return math.sqrt((x2-x1)**2 + (y2-y1)**2)
+        
+    def get_cloest_waypoints_idx(self, x, y):
+        closest_dist = float('inf')
+        closest_wp = 0
+        for i in range(len(self.waypoints)):
+            dist = self.basic_distance(x, y,
+                                 waypoints[i].pose.pose.position.x,
+                                 waypoints[i].pose.pose.position.y)
+            if dist < closest_dist:
+                closest_dist = dist
+                closest_wp = i
+
+        return closest_wp
+        
+        
+return index
 
     def get_light_state(self, light):
         """Determines the current color of the traffic light
