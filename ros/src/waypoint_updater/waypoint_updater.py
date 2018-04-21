@@ -69,7 +69,6 @@ class WaypointUpdater(object):
     def publish_waypoints(self):
         final_lane = self.generate_lane()
         self.final_waypoints_pub.publish(final_lane)
-        
        
         
     def generate_lane(self):
@@ -78,13 +77,17 @@ class WaypointUpdater(object):
         
         closest_idx = self.get_closest_waypoint_idx()
         farthest_idx = closest_idx + LOOKAHEAD_WPS
-        #base_waypoints = self.base_lane.waypoints[closest_idx:farthest_idx]
-        base_waypoints = self.base_waypoints.waypoints[closest_idx:farthest_idx]
-        
+        waypoints_range = self.base_waypoints.waypoints[closest_idx:farthest_idx]
+        print('--------------')
+        print(self.base_waypoints.waypoints)
+        print(closest_idx)
+        print(farthest_idx)
+        print(waypoints_range)
+        print('--------------')
         if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx): #no traffic light detected or too far away
-            lane.waypoints = base_waypoints
+            lane.waypoints = waypoints_range
         else:
-            lane.waypoints = self.decelerate_waypoints(base_waypoints, closest_idx) #traffic light in range: change WPs
+            lane.waypoints = self.decelerate_waypoints(waypoints_range, closest_idx) #traffic light in range: change WPs
 
     def decelerate_waypoints(self, waypoints, closest_idx):
         temp = []
