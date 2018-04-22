@@ -57,16 +57,16 @@ class WaypointUpdater(object):
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
                 closest_waypoints_idx = self.get_closest_waypoint_idx()
-                #self.publish_waypoints(closest_waypoints_idx)
-                self.publish_waypoints()
+                self.publish_waypoints_old(closest_waypoints_idx)
+                #self.publish_waypoints()
             rate.sleep()
             
-  #  def publish_waypoints_old(self, closest_idx):
+    def publish_waypoints_old(self, closest_idx):
         #as shown in walkthrough
- #       lane = Lane()
-#        lane.header = self.base_waypoints.header
-        #lane.waypoints = self.base_waypoints.waypoints.[closest_idx: closest_idx + LOOKAHEAD_WPS]
-        #self.final_waypoints_pub.publish(lane)
+        lane = Lane()
+        lane.header = self.base_waypoints.header
+        lane.waypoints = self.base_waypoints.waypoints.[closest_idx: closest_idx + LOOKAHEAD_WPS]
+        self.final_waypoints_pub.publish(lane)
         
     def publish_waypoints(self):
         final_lane = self.generate_lane()
