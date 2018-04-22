@@ -65,7 +65,7 @@ class WaypointUpdater(object):
         #as shown in walkthrough
         lane = Lane()
         lane.header = self.base_waypoints.header
-        lane.waypoints = self.base_waypoints.waypoints.[closest_idx: closest_idx + LOOKAHEAD_WPS]
+        lane.waypoints = self.base_waypoints.waypoints[closest_idx: closest_idx + LOOKAHEAD_WPS]
         self.final_waypoints_pub.publish(lane)
         
     def publish_waypoints(self):
