@@ -180,8 +180,8 @@ class TLDetector(object):
                 current_wp_idx = self.get_closest_waypoint_idx(line[0],line[1])
                 
                 dist = current_wp_idx - car_wp_idx
-                if d >= 0 and d < diff:
-                    diff = d
+                if dist >= 0 and dist < diff:
+                    diff = dist
                     closest_light = light
                     line_wp_idx = current_wp_idx
         #TODO find the closest visible traffic light (if one exists)

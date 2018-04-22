@@ -46,6 +46,7 @@ class WaypointUpdater(object):
         self.waypoints_2d = None
         self.waypoint_tree = None
         self.stopline_wp_idx = -1
+        MAX_DECEL = 1.0
         #rospy.spin()
         self.loop()
 
