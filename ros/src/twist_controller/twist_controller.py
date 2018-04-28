@@ -39,13 +39,15 @@ class Controller(object):
         
         
     def control(self, current_vel, dbw_enabled, linear_vel, angular_vel):
+        rospy.logwarn("Controller active!")
+
         if not dbw_enabled:
             self.throttle_controller.reset()
             rospy.logwarn("DBW disabled: %s", dbw_enabled)
             return 0, 0, 0
         current_vel = self.vel_lpf.filt(current_vel)
         
-        rospy.loginfo("Current vel after lpf %s", self.current_vel)
+        rospy.logwarn("Current vel after lpf %s", self.current_vel)
 
         steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
         vel_error = linear_vel - current_vel
@@ -67,8 +69,3 @@ class Controller(object):
             decel = max(vel_error, self.decel_limit) #set max of desired and possible deceleartion
             brake = self.vehicle_mass * self.wheel_radius * abs(decel) #break needed in Nm
         return throttle, brake, steering
-
-    def control(self, *args, **kwargs):
-        # TODO: Change the arg, kwarg list to suit your needs
-        # Return throttle, brake, steer
-        return 1., 0., 0.
