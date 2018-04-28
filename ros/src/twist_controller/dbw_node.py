@@ -59,7 +59,7 @@ class DBWNode(object):
             accel_limit=accel_limit, wheel_radius=wheel_radius, wheel_base=wheel_base, steer_ratio=steer_ratio,
             max_lat_accel=max_lat_accel, max_steer_angle=max_steer_angle)
         
-        self.dbw_enabled = False
+        
         self.current_vel = None
         self.linear_vel = None
         self.angular_vel = None        
@@ -73,7 +73,7 @@ class DBWNode(object):
         rospy.Subscriber('/twist_cmd', TwistStamped, self.twist_cb)
         rospy.Subscriber('/current_velocity', TwistStamped, self.velocity_cb)
         
-
+        self.dbw_enabled = None
         
         
         self.loop()
@@ -108,7 +108,8 @@ class DBWNode(object):
                 self.publish(self.throttle, self.brake, self.steering)
             rate.sleep()
     def dbw_enabled_cb(self, msg):
-        self.dbw_enabled = msg
+        self.dbw_enabled = msg.data
+        rospy.loginfo("DBW msg %s", msg)
     def twist_cb(self, msg):
         self.linear_vel = msg.twist.linear.x
         self.angular_vel = msg.twist.angular.z
