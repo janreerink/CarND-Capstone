@@ -98,10 +98,9 @@ class DBWNode(object):
                                                             self.dbw_enabled, self.linear_vel, self.angular_vel) 
             if self.dbw_enabled:
                 print('Published DBW commands: ', self.throttle, self.brake, self.steering) #debugging
-                rospy.loginfo('Calling control')
-                rospy.loginfo(self.throttle)
-                rospy.loginfo(self.brake)
-                rospy.loginfo(self.steering)
+                rospy.loginfo("Throttle %s", self.throttle)
+                rospy.loginfo("Steering %s", self.steering)
+                rospy.loginfo("Brake %s", self.brake)
                 self.publish(self.throttle, self.brake, self.steering)
             rate.sleep()
     def dbw_enabled_cb(self, msg):
