@@ -64,7 +64,6 @@ class DBWNode(object):
         self.linear_vel = None
         self.angular_vel = None        
         self.curr_ang_vel = None
-        self.dbw_enabled = None
         self.throttle = 0
         self.steering = 0
         self.brake = 0        
@@ -94,6 +93,7 @@ class DBWNode(object):
             rospy.loginfo("Current vel %s", self.current_vel)
             rospy.loginfo("Target vel %s", self.linear_vel)
             rospy.loginfo("Target angular vel %s", self.angular_vel)
+            rospy.loginfo("dbw state %s", self.dbw_enabled)
             if not None in (self.current_vel, self.linear_vel, self.angular_vel, self.dbw_enabled):
                 print('Calling control')
                 rospy.logwarn('Calling control')
