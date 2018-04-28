@@ -57,8 +57,8 @@ class WaypointUpdater(object):
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
                 closest_waypoints_idx = self.get_closest_waypoint_idx()
-                self.publish_waypoints_old(closest_waypoints_idx)
-                #self.publish_waypoints()
+                #self.publish_waypoints_old(closest_waypoints_idx) #no traffic light detection
+                self.publish_waypoints()
             rate.sleep()
             
     def publish_waypoints_old(self, closest_idx):
@@ -87,10 +87,10 @@ class WaypointUpdater(object):
         #print(waypoints_range[0])
         #print('--------------')
         if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx): #no traffic light detected or too far away
-            rospy.loginfo("no red lights detected or out of range")
+            rospy.logwarn("no red lights detected or out of range")
             lane.waypoints = waypoints_range
         else:
-            rospy.loginfo("detected light idx %s", self.stopline_wp_idx)
+            rospy.logwarn("detected light idx %s", self.stopline_wp_idx)
             lane.waypoints = self.decelerate_waypoints(waypoints_range, closest_idx) #traffic light in range: change WPs
         return lane
 
