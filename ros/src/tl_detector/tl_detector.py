@@ -97,7 +97,7 @@ class TLDetector(object):
             self.last_state = self.state
             #light_wp = light_wp if state == TrafficLight.RED else -1
             if state == TrafficLight.RED:
-                rospy.loginfo("red light detected!")
+                #rospy.loginfo("red light detected!")
                 light_wp = light_wp
             else:
                 light_wp = -1
@@ -164,8 +164,9 @@ class TLDetector(object):
         #Get classification
         #return self.light_classifier.get_classification(cv_image)
 
-        rospy.loginfo("ground truth light state: %s", light.state)
-        return light.state #for testing: true value from simulator
+        #rospy.loginfo("ground truth light state: %s", light.state)
+        #return light.state #for testing: true value from simulator
+        return 2 #testing; return always green
 
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its

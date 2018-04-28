@@ -56,7 +56,7 @@ class WaypointUpdater(object):
         rate = rospy.Rate(50)
         while not rospy.is_shutdown():
             if self.pose and self.base_waypoints:
-                closest_waypoints_idx = self.get_closest_waypoint_idx()
+                #closest_waypoints_idx = self.get_closest_waypoint_idx()
                 #self.publish_waypoints_old(closest_waypoints_idx) #no traffic light detection
                 self.publish_waypoints()
             rate.sleep()
@@ -69,8 +69,20 @@ class WaypointUpdater(object):
         self.final_waypoints_pub.publish(lane)
         
     def publish_waypoints(self):
-        final_lane = self.generate_lane()
-        self.final_waypoints_pub.publish(final_lane)
+        #final_lane = self.generate_lane()
+        lane = Lane()
+        lane.header = self.base_waypoints.header
+        closest_idx = self.get_closest_waypoint_idx()
+        farthest_idx = closest_idx + LOOKAHEAD_WPS
+        waypoints_range = self.base_waypoints.waypoints[closest_idx:farthest_idx]
+        if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx): #no traffic light detected or too far away
+            #rospy.logwarn("no red lights detected or out of range")
+            lane.waypoints = waypoints_range
+        else:
+            rospy.logwarn("detected light idx %s", self.stopline_wp_idx)
+            lane.waypoints = self.decelerate_waypoints(waypoints_range, closest_idx) #traffic light in range: change WPs
+        #self.final_waypoints_pub.publish(final_lane)
+        self.final_waypoints_pub.publish(lane)
        
         
     def generate_lane(self):
@@ -87,7 +99,7 @@ class WaypointUpdater(object):
         #print(waypoints_range[0])
         #print('--------------')
         if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx): #no traffic light detected or too far away
-            rospy.logwarn("no red lights detected or out of range")
+            #rospy.logwarn("no red lights detected or out of range")
             lane.waypoints = waypoints_range
         else:
             rospy.logwarn("detected light idx %s", self.stopline_wp_idx)
