@@ -85,7 +85,7 @@ class WaypointUpdater(object):
         self.final_waypoints_pub.publish(lane)
        
         
-    def generate_lane(self):
+    def generate_lane(self): #obsolete
         lane = Lane()
         lane.header = self.base_waypoints.header
         
@@ -103,7 +103,9 @@ class WaypointUpdater(object):
             lane.waypoints = waypoints_range
         else:
             rospy.logwarn("detected light idx %s", self.stopline_wp_idx)
+            rospy.logwarn("orig wps %s", lane.waypoints)
             lane.waypoints = self.decelerate_waypoints(waypoints_range, closest_idx) #traffic light in range: change WPs
+            rospy.logwarn("decel wps %s", lane.waypoints)
         return lane
 
     def decelerate_waypoints(self, waypoints, closest_idx):
@@ -114,12 +116,11 @@ class WaypointUpdater(object):
             p.pose = wp.pose 
             
             #change associated wp velocity
-            stop_idx = max(self.stopline_wp_idx -closest_idx - 2, 0) #to adjust car front with stopline
+            stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0) #to adjust car front with stopline
             dist = self.distance(waypoints, idx, stop_idx)
             vel = math.sqrt(2 * MAX_DECEL * dist)
             if vel < 1:
                 vel = 0
-                
             p.twist.twist.linear.x = min(vel, wp.twist.twist.linear.x)
             temp.append(p)
         return temp

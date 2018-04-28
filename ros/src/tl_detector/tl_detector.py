@@ -165,8 +165,8 @@ class TLDetector(object):
         #return self.light_classifier.get_classification(cv_image)
 
         #rospy.loginfo("ground truth light state: %s", light.state)
-        #return light.state #for testing: true value from simulator
-        return 2 #testing; return always green
+        return light.state #for testing: true value from simulator
+        #return 2 #testing; return always green
 
     def process_traffic_lights(self):
         """Finds closest visible traffic light, if one exists, and determines its
