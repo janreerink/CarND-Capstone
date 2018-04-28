@@ -54,6 +54,7 @@ class TLDetector(object):
         self.last_wp = -1
         self.state_count = 0
 
+        #rospy.loginfo("result Steering %s", self.steering)
 
         rospy.spin()
 
@@ -156,6 +157,8 @@ class TLDetector(object):
 
         #Get classification
         #return self.light_classifier.get_classification(cv_image)
+
+        rospy.loginfo("ground truth light state: %s", light.state)
         return light.state #for testing: true value from simulator
 
     def process_traffic_lights(self):

@@ -9,11 +9,7 @@ from pid import PID
 class Controller(object):
     def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit, accel_limit,
     wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
-        
-        #self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
         self.yaw_controller = YawController(wheel_base=wheel_base, steer_ratio=steer_ratio, min_speed=0.1, max_lat_accel=max_lat_accel, max_steer_angle=max_steer_angle)
-        
-        
         
         kp = 0.3 #proportional term
         ki = 0.1 #integrative term
@@ -39,15 +35,13 @@ class Controller(object):
         
         
     def control(self, current_vel, dbw_enabled, linear_vel, angular_vel):
-        rospy.logwarn("Controller active!")
-
         if not dbw_enabled:
             self.throttle_controller.reset()
             rospy.logwarn("DBW disabled: %s", dbw_enabled)
             return 0, 0, 0
         current_vel = self.vel_lpf.filt(current_vel)
         
-        rospy.logwarn("Current vel after lpf %s", current_vel)
+        #rospy.loginfo("Current vel after lpf %s", current_vel)
 
         steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
         vel_error = linear_vel - current_vel

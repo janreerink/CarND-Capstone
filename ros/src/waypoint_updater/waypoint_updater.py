@@ -87,8 +87,10 @@ class WaypointUpdater(object):
         #print(waypoints_range[0])
         #print('--------------')
         if self.stopline_wp_idx == -1 or (self.stopline_wp_idx >= farthest_idx): #no traffic light detected or too far away
+            rospy.loginfo("no red lights detected or out of range")
             lane.waypoints = waypoints_range
         else:
+            rospy.loginfo("detected light idx %s", self.stopline_wp_idx)
             lane.waypoints = self.decelerate_waypoints(waypoints_range, closest_idx) #traffic light in range: change WPs
         return lane
 
@@ -148,6 +150,8 @@ class WaypointUpdater(object):
 
     def traffic_cb(self, msg):
         # TODO: Callback for /traffic_waypoint message. Implement
+        rospy.loginfo("traffic light msg %s", msg)
+
         self.stopline_wp_idx = msg.data
         pass
 

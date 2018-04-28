@@ -90,33 +90,30 @@ class DBWNode(object):
             #                                                     <any other argument you need>)
             # if <dbw is enabled>:
             #   self.publish(throttle, brake, steer)
-            rospy.loginfo("Current vel %s", self.current_vel)
-            rospy.loginfo("Target vel %s", self.linear_vel)
-            rospy.loginfo("Target angular vel %s", self.angular_vel)
-            rospy.loginfo("dbw state %s", self.dbw_enabled)
+            #rospy.loginfo("Current vel %s", self.current_vel)
+            #rospy.loginfo("Target vel %s", self.linear_vel)
+            #rospy.loginfo("Target angular vel %s", self.angular_vel)
+            #rospy.loginfo("dbw state %s", self.dbw_enabled)
             if not None in (self.current_vel, self.linear_vel, self.angular_vel, self.dbw_enabled):
-                print('Calling control')
-                rospy.logwarn('Calling control')
-
+                #rospy.loginfo('Calling control')
                 self.throttle, self.brake, self.steering = self.controller.control(self.current_vel, self.dbw_enabled, self.linear_vel, self.angular_vel) 
 
             if self.dbw_enabled:
-                print('Published DBW commands: ', self.throttle, self.brake, self.steering) #debugging
-                rospy.logwarn("result Throttle %s", self.throttle)
-                rospy.logwarn("result Steering %s", self.steering)
-                rospy.logwarn("result Brake %s", self.brake)
+                #rospy.loginfo("result Throttle %s", self.throttle)
+                #rospy.loginfo("result Steering %s", self.steering)
+                #rospy.loginfo("result Brake %s", self.brake)
                 self.publish(self.throttle, self.brake, self.steering)
             rate.sleep()
     def dbw_enabled_cb(self, msg):
         self.dbw_enabled = msg
-        rospy.logwarn("DBW msg %s", msg)
+        #rospy.loginfo("DBW msg %s", msg)
     def twist_cb(self, msg):
         self.linear_vel = msg.twist.linear.x
         self.angular_vel = msg.twist.angular.z
-        rospy.loginfo("Twist message %s", msg)
+        #rospy.loginfo("Twist message %s", msg)
     def velocity_cb(self, msg):
         self.current_vel = msg.twist.linear.x
-        rospy.loginfo("Target vel message %s", msg)
+        #rospy.loginfo("Target vel message %s", msg)
         
 
     def publish(self, throttle, brake, steer):
