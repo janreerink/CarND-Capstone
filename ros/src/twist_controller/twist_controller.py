@@ -10,7 +10,11 @@ class Controller(object):
     def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit, accel_limit,
     wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
         
-        self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
+        #self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
+        self.yaw_controller = YawController(wheel_base=wheel_base, steer_ratio=steer_ratio, min_speed=0.1, max_lat_accel=max_lat_acceleration, max_steer_angle=max_steer_angle)
+        
+        
+        
         kp = 0.3 #proportional term
         ki = 0.1 #integrative term
         kd = 0 #diff term
@@ -29,7 +33,7 @@ class Controller(object):
         self.decelt_limit = decel_limit
         self.accel_limit = accel_limit
         self.wheel_radius = wheel_radius
-        
+        self.last_vel = 0
         self.last_time = rospy.get_time()
         
         
@@ -41,6 +45,8 @@ class Controller(object):
             return 0, 0, 0
         current_vel = self.vel_lpf.filt(current_vel)
         
+        rospy.loginfo("Current vel after lpf %s", self.current_vel)
+
         steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
         vel_error = linear_vel - current_vel
         self.last_vel = current_vel

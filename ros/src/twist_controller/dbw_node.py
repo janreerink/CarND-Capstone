@@ -94,8 +94,11 @@ class DBWNode(object):
             if not None in (self.current_vel, self.linear_vel, self.angular_vel, self.dbw_enabled):
                 print('Calling control')
                 rospy.loginfo('Calling control')
-                self.throttle, self.brake, self.steering = self.controller.control(self.current_vel,
-                                                            self.dbw_enabled, self.linear_vel, self.angular_vel) 
+                rospy.loginfo("Current vel %s", self.current_vel)
+                rospy.loginfo("Target vel %s", self.linear_vel)
+                rospy.loginfo("Target angular vel %s", self.angular_vel)
+                self.throttle, self.brake, self.steering = self.controller.control(self.current_vel, self.dbw_enabled, self.linear_vel, self.angular_vel) 
+
             if self.dbw_enabled:
                 print('Published DBW commands: ', self.throttle, self.brake, self.steering) #debugging
                 rospy.loginfo("Throttle %s", self.throttle)
@@ -108,8 +111,10 @@ class DBWNode(object):
     def twist_cb(self, msg):
         self.linear_vel = msg.twist.linear.x
         self.angular_vel = msg.twist.angular.z
+        rospy.loginfo("Twist message %s", msg)
     def velocity_cb(self, msg):
         self.current_vel = msg.twist.linear.x
+        rospy.loginfo("Target vel message %s", msg)
         
 
     def publish(self, throttle, brake, steer):
