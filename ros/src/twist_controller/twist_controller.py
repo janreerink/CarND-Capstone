@@ -26,7 +26,7 @@ class Controller(object):
         self.vehicle_mass = vehicle_mass
         self.fuel_capacity = fuel_capacity
         self.brake_deadband = brake_deadband
-        self.decelt_limit = decel_limit
+        self.decet_limit = decel_limit
         self.accel_limit = accel_limit
         self.wheel_radius = wheel_radius
         self.last_vel = 0
