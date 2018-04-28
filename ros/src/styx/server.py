@@ -12,8 +12,6 @@ from bridge import Bridge
 from conf import conf
 
 sio = socketio.Server()
-#eventlet.monkey_patch() #from slack channel
-#sio = socketio.Server(async_mode='eventlet') #from slack channel
 app = Flask(__name__)
 msgs = []
 
