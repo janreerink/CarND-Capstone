@@ -37,18 +37,19 @@ class Controller(object):
     def control(self, current_vel, dbw_enabled, linear_vel, angular_vel):
         if not dbw_enabled:
             self.throttle_controller.reset()
+            rospy.logwarn("DBW disabled: %s", dbw_enabled)
             return 0, 0, 0
         current_vel = self.vel_lpf.filt(current_vel)
         
-        steering = self.yaw_controller.get_steering(linear_vel, angular_velocity, current_velocity)
-        vel_error = liner_vel - current_vel
-        self.last_vel = current_el
+        steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel)
+        vel_error = linear_vel - current_vel
+        self.last_vel = current_vel
         
         current_time = rospy.get_time()
         sample_time = current_time - self.last_time
         self.last_time = current_time
         
-        throttle = self.throttle_controller.step(vel_error, sasmple_time)
+        throttle = self.throttle_controller.step(vel_error, sample_time)
         brake = 0
         
         if linear_vel == 0 and current_vel < 0.1: #if goal is to stop and vel already low, engage brakes to stay in place
