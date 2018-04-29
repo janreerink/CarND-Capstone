@@ -29,8 +29,8 @@ The controller uses the standard PID and lowpass functions provided in the start
 This node takes the position of traffic lights, camera images to determine the light's color, the car's position and the list of base waypoints. If a red traffic light is close to the car the waypoint
 is published to a list of traffic waypoints. These are later used to modify the listof waypoints so that the car decelerates and stops at the traffic light line.
 For classification of images the Google Object Detection API was used, as shown here:
-..* https://becominghuman.ai/traffic-light-detection-tensorflow-api-c75fdbadac62
-..* https://github.com/mkoehnke/CarND-Capstone-TrafficLightDetection
++ https://becominghuman.ai/traffic-light-detection-tensorflow-api-c75fdbadac62
++ https://github.com/mkoehnke/CarND-Capstone-TrafficLightDetection
 
 
 #### Waypoint updater part 2
