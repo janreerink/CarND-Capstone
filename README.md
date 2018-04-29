@@ -9,7 +9,7 @@ Please use **one** of the two installation options, either native **or** docker 
 The goal of this project is to implement several ROS nodes to make a simulated car complete several tracks in the provided simulator.
 
 The following pictures illustrates the architecture of the ROS implementation:
-![alt text][iamge0]
+![alt text][image0]
 
 
 #### Partial Waypoint node
