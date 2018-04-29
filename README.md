@@ -25,9 +25,13 @@ The controller uses the standard PID and lowpass functions provided in the start
 This node takes the position of traffic lights, camera images to determine the light's color, the car's position and the list of base waypoints. If a red traffic light is close to the car the waypoint
 is published to a list of traffic waypoints. These are later used to modify the listof waypoints so that the car decelerates and stops at the traffic light line.
 For classification of images containing traffic lights a pretrained CNN from a previous project was used with the last layer replaced by soft-max with for four classes (red, yellow, green, n/a).
+Training data was downloaded from this repository:
+
 
 #### Waypoint updater part 2
 With the traffic light detection working, the waypoint updater can utilize information on nearby traffic light states to change target velocities for waypoints so that the car slows down and stops at red lights.
+In case of a red light detected in range, the current list of waypoints is replaced by a list of identical waypoints with changed speed settings, aiming to smoothly decelerate to get to 0 speed at the
+stopping line.
 
 
 

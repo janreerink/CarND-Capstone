@@ -162,10 +162,10 @@ class TLDetector(object):
         cv_image = self.bridge.imgmsg_to_cv2(self.camera_image, "bgr8")
 
         #Get classification
-        #return self.light_classifier.get_classification(cv_image)
+        return self.light_classifier.get_classification(cv_image)
 
         #rospy.loginfo("ground truth light state: %s", light.state)
-        return light.state #for testing: true value from simulator
+        #return light.state #for testing: true value from simulator
         #return 2 #testing; return always green
 
     def process_traffic_lights(self):
