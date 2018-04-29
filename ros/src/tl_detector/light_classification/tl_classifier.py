@@ -23,7 +23,7 @@ class TLClassifier(object):
 
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
-        self.load_model(get_model_path())
+        self.load_model(self.get_model_path())
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image
