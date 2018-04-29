@@ -23,7 +23,7 @@ class TLClassifier(object):
 
         config_string = rospy.get_param("/traffic_light_config")
         self.config = yaml.load(config_string)
-        self.load_model('frozen_inference_graph.pb')
+        self.load_model(get_model_path())
 
     def get_classification(self, image):
         """Determines the color of the traffic light in the image
@@ -89,9 +89,9 @@ class TLClassifier(object):
             cv2.imwrite(os.path.join(IMAGE_PATH, "image_%04i_%d.jpg" % (self.image_counter, light_class)), bgr_image)
             self.image_counter += 1
 
-    #def get_model_path(self):
+    def get_model_path(self):
         #return os.path.dirname(os.path.realpath(__file__)) + self.config['detection_model']
-        #return 'frozen_inference_graph.pb'
+        return os.path.dirname(os.path.realpath(__file__)) + '/frozen_inference_graph.pb'
 
     def resize_image(self, image):
         height, width = image.shape[:2]
