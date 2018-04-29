@@ -6,6 +6,7 @@ Please use **one** of the two installation options, either native **or** docker 
 The goal of this project is to implement several ROS nodes to make a simulated car complete several tracks in the provided simulator.
 
 The following pictures illustrates the architecture of the ROS implementation:
+![car architecture](images/final-project-ros-graph-v2.png)
 
 
 #### Partial Waypoint node
@@ -24,8 +25,9 @@ The controller uses the standard PID and lowpass functions provided in the start
 #### traffic light detection node
 This node takes the position of traffic lights, camera images to determine the light's color, the car's position and the list of base waypoints. If a red traffic light is close to the car the waypoint
 is published to a list of traffic waypoints. These are later used to modify the listof waypoints so that the car decelerates and stops at the traffic light line.
-For classification of images containing traffic lights a pretrained CNN from a previous project was used with the last layer replaced by soft-max with for four classes (red, yellow, green, n/a).
-Training data was downloaded from this repository:
+For classification of images the Google Object Detection API was used, as shown here:
+https://becominghuman.ai/traffic-light-detection-tensorflow-api-c75fdbadac62
+https://github.com/mkoehnke/CarND-Capstone-TrafficLightDetection
 
 
 #### Waypoint updater part 2
