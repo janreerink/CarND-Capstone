@@ -104,4 +104,4 @@ class TLClassifier(object):
             image = cv2.resize(image, None, fx=scaling_factor, fy=scaling_factor, interpolation=cv2.INTER_AREA)
 
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-return image
+        return image
